@@ -1,0 +1,2546 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Membrane API",
+    "description": "API documentation for Membrane Engine",
+    "version": "1.0",
+    "contact": {}
+  },
+  "servers": [
+    {
+      "url": "https://api.getmembrane.com"
+    }
+  ],
+  "paths": {
+    "/actions": {
+      "post": {
+        "description": "Creates an integration-level action (workspace-wide) or a connection-level action instance when `connectionId` is provided. Supports intent-based creation: include an `intent` field to launch an action-building agent.",
+        "operationId": "createAction",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": {
+                    "description": "Stable unique identifier (UUID). Can be provided on create; otherwise generated. Must be unique across elements of this type.",
+                    "type": "string"
+                  },
+                  "key": {
+                    "description": "Stable key for referencing the element (e.g. in selectors). Unique per (parent, integration) scope. Generated from name if not provided on create.",
+                    "type": "string"
+                  },
+                  "name": {
+                    "description": "Display name. Optional on create; used to generate key when key is omitted.",
+                    "type": "string"
+                  },
+                  "description": {
+                    "description": "Optional human-readable description.",
+                    "type": "string"
+                  },
+                  "meta": {
+                    "description": "Optional key-value metadata.",
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  "integrationId": {
+                    "description": "Internal ID of the integration this element belongs to. Omit for universal elements; set for integration-specific elements. Uniqueness of key is scoped per integration.",
+                    "type": "string"
+                  },
+                  "integrationUuid": {
+                    "description": "UUID of the integration; alternative to integrationId when creating from export. Resolved to integrationId by the API.",
+                    "type": "string"
+                  },
+                  "integrationKey": {
+                    "description": "Key of the integration; alternative to integrationId. Resolved to integrationId by the API.",
+                    "type": "string"
+                  },
+                  "parentId": {
+                    "description": "Internal ID of the parent workspace element. Used for hierarchy (e.g. integration-level under universal). Child key uniqueness is scoped by parent and integration.",
+                    "type": "string"
+                  },
+                  "parentUuid": {
+                    "description": "UUID of the parent element; alternative to parentId when creating (e.g. from export). Resolved to parentId by the API.",
+                    "type": "string"
+                  },
+                  "parentKey": {
+                    "description": "Key of the parent element; alternative to parentId. Resolved to parentId by the API.",
+                    "type": "string"
+                  },
+                  "connectionId": {
+                    "description": "Connection ID for filtering or for connection-level instances. Same semantics as base integration-level property.",
+                    "type": "string"
+                  },
+                  "instanceKey": {
+                    "description": "Key for the connection-level instance when multiple exist per connection. Same semantics as base integration-level property.",
+                    "type": "string"
+                  },
+                  "isUniversal": {
+                    "description": "When true, the element is universal (shared across all integrations). Requires universal-element access. Omit or false for integration-specific elements.",
+                    "type": "boolean"
+                  },
+                  "externalAppId": {
+                    "description": "Internal ID of the external app this element belongs to. Auto-populated from the integration when integrationId is set and the integration has an externalAppId.",
+                    "type": "string"
+                  },
+                  "externalAppUuid": {
+                    "description": "UUID of the external app; alternative to externalAppId when creating from export. Resolved to externalAppId by the API.",
+                    "type": "string"
+                  },
+                  "externalAppKey": {
+                    "description": "Key of the external app; alternative to externalAppId. Resolved to externalAppId by the API.",
+                    "type": "string"
+                  },
+                  "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      },
+                      "format": {
+                        "type": "string"
+                      },
+                      "properties": {
+                        "type": "object",
+                        "additionalProperties": {}
+                      },
+                      "items": {},
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {}
+                        ]
+                      },
+                      "enum": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "referenceRecords": {
+                        "type": "array",
+                        "items": {}
+                      },
+                      "referenceCollection": {
+                        "type": "object",
+                        "properties": {
+                          "key": {},
+                          "parameters": {
+                            "type": "object",
+                            "additionalProperties": {}
+                          }
+                        }
+                      },
+                      "referenceUdm": {
+                        "type": "string"
+                      },
+                      "default": {},
+                      "allowCustom": {
+                        "type": "boolean"
+                      },
+                      "$ref": {
+                        "type": "string"
+                      },
+                      "required": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "minLength": {
+                        "type": "number"
+                      },
+                      "maxLength": {
+                        "type": "number"
+                      },
+                      "minimum": {
+                        "type": "number"
+                      },
+                      "maximum": {
+                        "type": "number"
+                      },
+                      "maxItems": {
+                        "type": "number"
+                      },
+                      "readOnly": {
+                        "type": "boolean"
+                      },
+                      "writeOnly": {
+                        "type": "boolean"
+                      },
+                      "examples": {
+                        "type": "array",
+                        "items": {}
+                      },
+                      "anyOf": {
+                        "type": "array",
+                        "items": {}
+                      },
+                      "isImplied": {
+                        "type": "boolean"
+                      },
+                      "isSensitive": {
+                        "type": "boolean"
+                      },
+                      "referenceCollectionPath": {
+                        "type": "string"
+                      },
+                      "referenceCollectionUri": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": {},
+                    "description": "JSON Schema for the action input. Used by the action engine for template output schema, run-time variables, and output mapping."
+                  },
+                  "type": {
+                    "description": "Action type (e.g. ConnectorOperation, RunJavascript). Determines which handler runs and which config schema is used for validation.",
+                    "type": "string",
+                    "enum": [
+                      "list-data-records",
+                      "find-data-record-by-id",
+                      "match-data-record",
+                      "create-data-record",
+                      "find-or-create-data-record",
+                      "update-data-record",
+                      "delete-data-record",
+                      "search-data-record",
+                      "connector-operation",
+                      "api-request-to-external-app",
+                      "api-request-to-your-app",
+                      "http-request",
+                      "run-javascript",
+                      "api-request"
+                    ]
+                  },
+                  "config": {
+                    "description": "Type-specific configuration object. Validated by the handler's config schema; passed to handler setup/run and getTemplateOutputSchema.",
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": {}
+                  },
+                  "outputMapping": {
+                    "description": "Mapping expression to transform the action's raw output. Evaluated with access to input, output, and user; used to compute transformed output schema and at run time."
+                  },
+                  "customOutputSchema": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      },
+                      "format": {
+                        "type": "string"
+                      },
+                      "properties": {
+                        "type": "object",
+                        "additionalProperties": {}
+                      },
+                      "items": {},
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {}
+                        ]
+                      },
+                      "enum": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "referenceRecords": {
+                        "type": "array",
+                        "items": {}
+                      },
+                      "referenceCollection": {
+                        "type": "object",
+                        "properties": {
+                          "key": {},
+                          "parameters": {
+                            "type": "object",
+                            "additionalProperties": {}
+                          }
+                        }
+                      },
+                      "referenceUdm": {
+                        "type": "string"
+                      },
+                      "default": {},
+                      "allowCustom": {
+                        "type": "boolean"
+                      },
+                      "$ref": {
+                        "type": "string"
+                      },
+                      "required": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "minLength": {
+                        "type": "number"
+                      },
+                      "maxLength": {
+                        "type": "number"
+                      },
+                      "minimum": {
+                        "type": "number"
+                      },
+                      "maximum": {
+                        "type": "number"
+                      },
+                      "maxItems": {
+                        "type": "number"
+                      },
+                      "readOnly": {
+                        "type": "boolean"
+                      },
+                      "writeOnly": {
+                        "type": "boolean"
+                      },
+                      "examples": {
+                        "type": "array",
+                        "items": {}
+                      },
+                      "anyOf": {
+                        "type": "array",
+                        "items": {}
+                      },
+                      "isImplied": {
+                        "type": "boolean"
+                      },
+                      "isSensitive": {
+                        "type": "boolean"
+                      },
+                      "referenceCollectionPath": {
+                        "type": "string"
+                      },
+                      "referenceCollectionUri": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": {},
+                    "description": "Explicit output schema for the action. Takes precedence over the transformed or default output schema when resolving outputSchema."
+                  },
+                  "intent": {
+                    "description": "[Experimental] Intent-based instruction for an agent to configure this element.",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "Internal database ID of the element. Assigned by the API; unique per element."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Display name. Always present in API responses (filled by API if not set on create)."
+                    },
+                    "uuid": {
+                      "description": "Stable unique identifier (UUID). Can be provided on create; otherwise generated. Must be unique across elements of this type.",
+                      "type": "string"
+                    },
+                    "key": {
+                      "description": "Stable key for referencing the element (e.g. in selectors). Unique per (parent, integration) scope. Generated from name if not provided on create.",
+                      "type": "string"
+                    },
+                    "description": {
+                      "description": "Optional human-readable description.",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "description": "Optional key-value metadata.",
+                      "type": "object",
+                      "additionalProperties": {}
+                    },
+                    "state": {
+                      "description": "Current lifecycle or health state (e.g. READY, SETUP_FAILED, CONFIGURATION_ERROR, BUILDING). Set by the engine during setup and validation.",
+                      "type": "string",
+                      "enum": [
+                        "BUILDING",
+                        "CLIENT_ACTION_REQUIRED",
+                        "CONFIGURATION_ERROR",
+                        "SETUP_FAILED",
+                        "READY"
+                      ]
+                    },
+                    "errors": {
+                      "description": "Validation or setup errors when state is not READY.",
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "bad_request",
+                              "connection",
+                              "configuration",
+                              "dependency_error",
+                              "flow_run",
+                              "flow_instance_setup",
+                              "concurrency",
+                              "internal",
+                              "action_run",
+                              "action_instance_setup",
+                              "unit_run",
+                              "custom_code",
+                              "insufficient_credit",
+                              "openrouter_not_configured"
+                            ]
+                          },
+                          "key": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {},
+                          "stack": {},
+                          "causedByError": {},
+                          "logs": {
+                            "type": "array",
+                            "items": {}
+                          }
+                        },
+                        "required": [
+                          "message"
+                        ]
+                      }
+                    },
+                    "revision": {
+                      "description": "Opaque revision token; changes on each update. Used for optimistic concurrency.",
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "description": "ISO date when the element was created.",
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "description": "ISO date when the element was last updated.",
+                      "type": "string"
+                    },
+                    "archivedAt": {
+                      "description": "When set, the element is archived (soft-deleted). Archived elements cannot be patched.",
+                      "type": "string"
+                    },
+                    "isDeactivated": {
+                      "description": "When true, setup is skipped and the element is treated as inactive (e.g. when dependencies are deactivated or the element is archived).",
+                      "type": "boolean"
+                    },
+                    "isReadOnly": {
+                      "description": "When true, the element cannot be modified (e.g. published package elements or elements from another workspace).",
+                      "type": "boolean"
+                    },
+                    "integrationId": {
+                      "description": "Internal ID of the integration this element belongs to. Omit for universal elements; set for integration-specific elements. Uniqueness of key is scoped per integration.",
+                      "type": "string"
+                    },
+                    "integrationUuid": {
+                      "description": "UUID of the integration; alternative to integrationId when creating from export. Resolved to integrationId by the API.",
+                      "type": "string"
+                    },
+                    "integrationKey": {
+                      "description": "Key of the integration; alternative to integrationId. Resolved to integrationId by the API.",
+                      "type": "string"
+                    },
+                    "parentId": {
+                      "description": "Internal ID of the parent workspace element. Used for hierarchy (e.g. integration-level under universal). Child key uniqueness is scoped by parent and integration.",
+                      "type": "string"
+                    },
+                    "parentUuid": {
+                      "description": "UUID of the parent element; alternative to parentId when creating (e.g. from export). Resolved to parentId by the API.",
+                      "type": "string"
+                    },
+                    "parentKey": {
+                      "description": "Key of the parent element; alternative to parentId. Resolved to parentId by the API.",
+                      "type": "string"
+                    },
+                    "connectionId": {
+                      "description": "Connection ID for filtering or for connection-level instances. Same semantics as base integration-level property.",
+                      "type": "string"
+                    },
+                    "instanceKey": {
+                      "description": "Key for the connection-level instance when multiple exist per connection. Same semantics as base integration-level property.",
+                      "type": "string"
+                    },
+                    "isUniversal": {
+                      "description": "When true, the element is universal (shared across all integrations). Requires universal-element access. Omit or false for integration-specific elements.",
+                      "type": "boolean"
+                    },
+                    "externalAppId": {
+                      "description": "Internal ID of the external app this element belongs to. Auto-populated from the integration when integrationId is set and the integration has an externalAppId.",
+                      "type": "string"
+                    },
+                    "externalAppUuid": {
+                      "description": "UUID of the external app when this action is published in a package that has an external app. Populated in API responses for published actions.",
+                      "type": "string"
+                    },
+                    "externalAppKey": {
+                      "description": "Key of the external app; alternative to externalAppId. Resolved to externalAppId by the API.",
+                      "type": "string"
+                    },
+                    "inputSchema": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        },
+                        "format": {
+                          "type": "string"
+                        },
+                        "properties": {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        "items": {},
+                        "additionalProperties": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {}
+                          ]
+                        },
+                        "enum": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "referenceRecords": {
+                          "type": "array",
+                          "items": {}
+                        },
+                        "referenceCollection": {
+                          "type": "object",
+                          "properties": {
+                            "key": {},
+                            "parameters": {
+                              "type": "object",
+                              "additionalProperties": {}
+                            }
+                          }
+                        },
+                        "referenceUdm": {
+                          "type": "string"
+                        },
+                        "default": {},
+                        "allowCustom": {
+                          "type": "boolean"
+                        },
+                        "$ref": {
+                          "type": "string"
+                        },
+                        "required": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "minLength": {
+                          "type": "number"
+                        },
+                        "maxLength": {
+                          "type": "number"
+                        },
+                        "minimum": {
+                          "type": "number"
+                        },
+                        "maximum": {
+                          "type": "number"
+                        },
+                        "maxItems": {
+                          "type": "number"
+                        },
+                        "readOnly": {
+                          "type": "boolean"
+                        },
+                        "writeOnly": {
+                          "type": "boolean"
+                        },
+                        "examples": {
+                          "type": "array",
+                          "items": {}
+                        },
+                        "anyOf": {
+                          "type": "array",
+                          "items": {}
+                        },
+                        "isImplied": {
+                          "type": "boolean"
+                        },
+                        "isSensitive": {
+                          "type": "boolean"
+                        },
+                        "referenceCollectionPath": {
+                          "type": "string"
+                        },
+                        "referenceCollectionUri": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": {},
+                      "description": "JSON Schema for the action input. Used by the action engine for template output schema, run-time variables, and output mapping."
+                    },
+                    "type": {
+                      "description": "Action type (e.g. ConnectorOperation, RunJavascript). Determines which handler runs and which config schema is used for validation.",
+                      "type": "string",
+                      "enum": [
+                        "list-data-records",
+                        "find-data-record-by-id",
+                        "match-data-record",
+                        "create-data-record",
+                        "find-or-create-data-record",
+                        "update-data-record",
+                        "delete-data-record",
+                        "search-data-record",
+                        "connector-operation",
+                        "api-request-to-external-app",
+                        "api-request-to-your-app",
+                        "http-request",
+                        "run-javascript",
+                        "api-request"
+                      ]
+                    },
+                    "config": {
+                      "description": "Type-specific configuration object. Validated by the handler's config schema; passed to handler setup/run and getTemplateOutputSchema.",
+                      "type": "object",
+                      "properties": {},
+                      "additionalProperties": {}
+                    },
+                    "outputMapping": {
+                      "description": "Mapping expression to transform the action's raw output. Evaluated with access to input, output, and user; used to compute transformed output schema and at run time."
+                    },
+                    "customOutputSchema": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        },
+                        "format": {
+                          "type": "string"
+                        },
+                        "properties": {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        "items": {},
+                        "additionalProperties": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {}
+                          ]
+                        },
+                        "enum": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "referenceRecords": {
+                          "type": "array",
+                          "items": {}
+                        },
+                        "referenceCollection": {
+                          "type": "object",
+                          "properties": {
+                            "key": {},
+                            "parameters": {
+                              "type": "object",
+                              "additionalProperties": {}
+                            }
+                          }
+                        },
+                        "referenceUdm": {
+                          "type": "string"
+                        },
+                        "default": {},
+                        "allowCustom": {
+                          "type": "boolean"
+                        },
+                        "$ref": {
+                          "type": "string"
+                        },
+                        "required": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "minLength": {
+                          "type": "number"
+                        },
+                        "maxLength": {
+                          "type": "number"
+                        },
+                        "minimum": {
+                          "type": "number"
+                        },
+                        "maximum": {
+                          "type": "number"
+                        },
+                        "maxItems": {
+                          "type": "number"
+                        },
+                        "readOnly": {
+                          "type": "boolean"
+                        },
+                        "writeOnly": {
+                          "type": "boolean"
+                        },
+                        "examples": {
+                          "type": "array",
+                          "items": {}
+                        },
+                        "anyOf": {
+                          "type": "array",
+                          "items": {}
+                        },
+                        "isImplied": {
+                          "type": "boolean"
+                        },
+                        "isSensitive": {
+                          "type": "boolean"
+                        },
+                        "referenceCollectionPath": {
+                          "type": "string"
+                        },
+                        "referenceCollectionUri": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": {},
+                      "description": "Explicit output schema for the action. Takes precedence over the transformed or default output schema when resolving outputSchema."
+                    },
+                    "isCustomized": {
+                      "type": "boolean"
+                    },
+                    "userId": {
+                      "type": "string"
+                    },
+                    "tenantId": {
+                      "type": "string"
+                    },
+                    "universalParentId": {
+                      "description": "For connection-level instances: ID of the universal (root) action in the hierarchy. Set automatically when creating an instance; used in list/selector queries to filter by universal parent.",
+                      "type": "string"
+                    },
+                    "outputSchema": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        },
+                        "format": {
+                          "type": "string"
+                        },
+                        "properties": {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        "items": {},
+                        "additionalProperties": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {}
+                          ]
+                        },
+                        "enum": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "referenceRecords": {
+                          "type": "array",
+                          "items": {}
+                        },
+                        "referenceCollection": {
+                          "type": "object",
+                          "properties": {
+                            "key": {},
+                            "parameters": {
+                              "type": "object",
+                              "additionalProperties": {}
+                            }
+                          }
+                        },
+                        "referenceUdm": {
+                          "type": "string"
+                        },
+                        "default": {},
+                        "allowCustom": {
+                          "type": "boolean"
+                        },
+                        "$ref": {
+                          "type": "string"
+                        },
+                        "required": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "minLength": {
+                          "type": "number"
+                        },
+                        "maxLength": {
+                          "type": "number"
+                        },
+                        "minimum": {
+                          "type": "number"
+                        },
+                        "maximum": {
+                          "type": "number"
+                        },
+                        "maxItems": {
+                          "type": "number"
+                        },
+                        "readOnly": {
+                          "type": "boolean"
+                        },
+                        "writeOnly": {
+                          "type": "boolean"
+                        },
+                        "examples": {
+                          "type": "array",
+                          "items": {}
+                        },
+                        "anyOf": {
+                          "type": "array",
+                          "items": {}
+                        },
+                        "isImplied": {
+                          "type": "boolean"
+                        },
+                        "isSensitive": {
+                          "type": "boolean"
+                        },
+                        "referenceCollectionPath": {
+                          "type": "string"
+                        },
+                        "referenceCollectionUri": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": {}
+                    },
+                    "isPublic": {
+                      "description": "When true, the element is publicly listed (e.g. in universe). Used for published packages; publish/unpublish updates this on published elements.",
+                      "type": "boolean"
+                    },
+                    "integration": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Internal database ID of the element. Assigned by the API; unique per element."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Display name. Always present in API responses (filled by API if not set on create)."
+                        },
+                        "uuid": {
+                          "description": "Stable unique identifier (UUID). Can be provided on create; otherwise generated. Must be unique across elements of this type.",
+                          "type": "string"
+                        },
+                        "key": {
+                          "description": "Stable key for referencing the element (e.g. in selectors). Unique per (parent, integration) scope. Generated from name if not provided on create.",
+                          "type": "string"
+                        },
+                        "description": {
+                          "description": "Optional human-readable description.",
+                          "type": "string"
+                        },
+                        "meta": {
+                          "description": "Optional key-value metadata.",
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        "state": {
+                          "description": "Current lifecycle or health state (e.g. READY, SETUP_FAILED, CONFIGURATION_ERROR, BUILDING). Set by the engine during setup and validation.",
+                          "type": "string",
+                          "enum": [
+                            "BUILDING",
+                            "CLIENT_ACTION_REQUIRED",
+                            "CONFIGURATION_ERROR",
+                            "SETUP_FAILED",
+                            "READY"
+                          ]
+                        },
+                        "errors": {
+                          "description": "Validation or setup errors when state is not READY.",
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "bad_request",
+                                  "connection",
+                                  "configuration",
+                                  "dependency_error",
+                                  "flow_run",
+                                  "flow_instance_setup",
+                                  "concurrency",
+                                  "internal",
+                                  "action_run",
+                                  "action_instance_setup",
+                                  "unit_run",
+                                  "custom_code",
+                                  "insufficient_credit",
+                                  "openrouter_not_configured"
+                                ]
+                              },
+                              "key": {
+                                "type": "string"
+                              },
+                              "message": {
+                                "type": "string"
+                              },
+                              "data": {},
+                              "stack": {},
+                              "causedByError": {},
+                              "logs": {
+                                "type": "array",
+                                "items": {}
+                              }
+                            },
+                            "required": [
+                              "message"
+                            ]
+                          }
+                        },
+                        "revision": {
+                          "description": "Opaque revision token; changes on each update. Used for optimistic concurrency.",
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "description": "ISO date when the element was created.",
+                          "type": "string"
+                        },
+                        "updatedAt": {
+                          "description": "ISO date when the element was last updated.",
+                          "type": "string"
+                        },
+                        "archivedAt": {
+                          "type": "string"
+                        },
+                        "isDeactivated": {
+                          "type": "boolean"
+                        },
+                        "isReadOnly": {
+                          "description": "When true, the element cannot be modified (e.g. published package elements or elements from another workspace).",
+                          "type": "boolean"
+                        },
+                        "logoUri": {
+                          "type": "string"
+                        },
+                        "connectorId": {
+                          "type": "string"
+                        },
+                        "connectorVersion": {
+                          "type": "string"
+                        },
+                        "oAuthCallbackUri": {
+                          "type": "string"
+                        },
+                        "parameters": {},
+                        "hasMissingParameters": {
+                          "type": "boolean"
+                        },
+                        "hasDocumentation": {
+                          "type": "boolean"
+                        },
+                        "hasOperations": {
+                          "type": "boolean"
+                        },
+                        "operationsCount": {
+                          "type": "number"
+                        },
+                        "hasData": {
+                          "type": "boolean"
+                        },
+                        "dataCollectionsCount": {
+                          "type": "number"
+                        },
+                        "hasEvents": {
+                          "type": "boolean"
+                        },
+                        "eventsCount": {
+                          "type": "number"
+                        },
+                        "hasGlobalWebhooks": {
+                          "type": "boolean"
+                        },
+                        "hasUdm": {
+                          "type": "boolean"
+                        },
+                        "isTest": {
+                          "type": "boolean"
+                        },
+                        "externalAppId": {
+                          "type": "string"
+                        },
+                        "appUuid": {
+                          "description": "[INTERNAL] Deprecated: Use externalAppId instead",
+                          "type": "string"
+                        },
+                        "authType": {
+                          "type": "string",
+                          "enum": [
+                            "integration-app-token",
+                            "membrane-token",
+                            "oauth2",
+                            "oauth1",
+                            "client-credentials",
+                            "proxy"
+                          ]
+                        },
+                        "optionsConfig": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "object",
+                            "properties": {
+                              "disabled": {
+                                "type": "boolean"
+                              },
+                              "parameters": {
+                                "type": "object",
+                                "additionalProperties": {}
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "logoUri"
+                      ]
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "meta": {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        "internalId": {
+                          "type": "string"
+                        },
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        "credentials": {},
+                        "lastActiveAt": {
+                          "type": "string"
+                        },
+                        "isTest": {
+                          "type": "boolean"
+                        },
+                        "isBillable": {
+                          "type": "boolean"
+                        },
+                        "isActive": {
+                          "type": "boolean"
+                        },
+                        "aiCreditsRolling30DayLimit": {
+                          "type": "number",
+                          "minimum": 0,
+                          "nullable": true
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        },
+                        "archivedAt": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "internalId"
+                      ]
+                    },
+                    "parent": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Internal database ID of the element. Assigned by the API; unique per element."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Display name. Always present in API responses (filled by API if not set on create)."
+                        },
+                        "uuid": {
+                          "description": "Stable unique identifier (UUID). Can be provided on create; otherwise generated. Must be unique across elements of this type.",
+                          "type": "string"
+                        },
+                        "key": {
+                          "description": "Stable key for referencing the element (e.g. in selectors). Unique per (parent, integration) scope. Generated from name if not provided on create.",
+                          "type": "string"
+                        },
+                        "description": {
+                          "description": "Optional human-readable description.",
+                          "type": "string"
+                        },
+                        "meta": {
+                          "description": "Optional key-value metadata.",
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        "state": {
+                          "description": "Current lifecycle or health state (e.g. READY, SETUP_FAILED, CONFIGURATION_ERROR, BUILDING). Set by the engine during setup and validation.",
+                          "type": "string",
+                          "enum": [
+                            "BUILDING",
+                            "CLIENT_ACTION_REQUIRED",
+                            "CONFIGURATION_ERROR",
+                            "SETUP_FAILED",
+                            "READY"
+                          ]
+                        },
+                        "errors": {
+                          "description": "Validation or setup errors when state is not READY.",
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "bad_request",
+                                  "connection",
+                                  "configuration",
+                                  "dependency_error",
+                                  "flow_run",
+                                  "flow_instance_setup",
+                                  "concurrency",
+                                  "internal",
+                                  "action_run",
+                                  "action_instance_setup",
+                                  "unit_run",
+                                  "custom_code",
+                                  "insufficient_credit",
+                                  "openrouter_not_configured"
+                                ]
+                              },
+                              "key": {
+                                "type": "string"
+                              },
+                              "message": {
+                                "type": "string"
+                              },
+                              "data": {},
+                              "stack": {},
+                              "causedByError": {},
+                              "logs": {
+                                "type": "array",
+                                "items": {}
+                              }
+                            },
+                            "required": [
+                              "message"
+                            ]
+                          }
+                        },
+                        "revision": {
+                          "description": "Opaque revision token; changes on each update. Used for optimistic concurrency.",
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "description": "ISO date when the element was created.",
+                          "type": "string"
+                        },
+                        "updatedAt": {
+                          "description": "ISO date when the element was last updated.",
+                          "type": "string"
+                        },
+                        "archivedAt": {
+                          "description": "When set, the element is archived (soft-deleted). Archived elements cannot be patched.",
+                          "type": "string"
+                        },
+                        "isDeactivated": {
+                          "description": "When true, setup is skipped and the element is treated as inactive (e.g. when dependencies are deactivated or the element is archived).",
+                          "type": "boolean"
+                        },
+                        "isReadOnly": {
+                          "description": "When true, the element cannot be modified (e.g. published package elements or elements from another workspace).",
+                          "type": "boolean"
+                        },
+                        "integrationId": {
+                          "description": "Internal ID of the integration this element belongs to. Omit for universal elements; set for integration-specific elements. Uniqueness of key is scoped per integration.",
+                          "type": "string"
+                        },
+                        "integrationUuid": {
+                          "description": "UUID of the integration; alternative to integrationId when creating from export. Resolved to integrationId by the API.",
+                          "type": "string"
+                        },
+                        "integrationKey": {
+                          "description": "Key of the integration; alternative to integrationId. Resolved to integrationId by the API.",
+                          "type": "string"
+                        },
+                        "parentId": {
+                          "description": "Internal ID of the parent workspace element. Used for hierarchy (e.g. integration-level under universal). Child key uniqueness is scoped by parent and integration.",
+                          "type": "string"
+                        },
+                        "parentUuid": {
+                          "description": "UUID of the parent element; alternative to parentId when creating (e.g. from export). Resolved to parentId by the API.",
+                          "type": "string"
+                        },
+                        "parentKey": {
+                          "description": "Key of the parent element; alternative to parentId. Resolved to parentId by the API.",
+                          "type": "string"
+                        },
+                        "connectionId": {
+                          "description": "Connection ID for filtering or for connection-level instances. Same semantics as base integration-level property.",
+                          "type": "string"
+                        },
+                        "instanceKey": {
+                          "description": "Key for the connection-level instance when multiple exist per connection. Same semantics as base integration-level property.",
+                          "type": "string"
+                        },
+                        "isUniversal": {
+                          "description": "When true, the element is universal (shared across all integrations). Requires universal-element access. Omit or false for integration-specific elements.",
+                          "type": "boolean"
+                        },
+                        "externalAppId": {
+                          "description": "Internal ID of the external app this element belongs to. Auto-populated from the integration when integrationId is set and the integration has an externalAppId.",
+                          "type": "string"
+                        },
+                        "externalAppUuid": {
+                          "description": "UUID of the external app when this action is published in a package that has an external app. Populated in API responses for published actions.",
+                          "type": "string"
+                        },
+                        "externalAppKey": {
+                          "description": "Key of the external app; alternative to externalAppId. Resolved to externalAppId by the API.",
+                          "type": "string"
+                        },
+                        "inputSchema": {
+                          "type": "object",
+                          "properties": {
+                            "title": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  }
+                                }
+                              ]
+                            },
+                            "format": {
+                              "type": "string"
+                            },
+                            "properties": {
+                              "type": "object",
+                              "additionalProperties": {}
+                            },
+                            "items": {},
+                            "additionalProperties": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {}
+                              ]
+                            },
+                            "enum": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "referenceRecords": {
+                              "type": "array",
+                              "items": {}
+                            },
+                            "referenceCollection": {
+                              "type": "object",
+                              "properties": {
+                                "key": {},
+                                "parameters": {
+                                  "type": "object",
+                                  "additionalProperties": {}
+                                }
+                              }
+                            },
+                            "referenceUdm": {
+                              "type": "string"
+                            },
+                            "default": {},
+                            "allowCustom": {
+                              "type": "boolean"
+                            },
+                            "$ref": {
+                              "type": "string"
+                            },
+                            "required": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "minLength": {
+                              "type": "number"
+                            },
+                            "maxLength": {
+                              "type": "number"
+                            },
+                            "minimum": {
+                              "type": "number"
+                            },
+                            "maximum": {
+                              "type": "number"
+                            },
+                            "maxItems": {
+                              "type": "number"
+                            },
+                            "readOnly": {
+                              "type": "boolean"
+                            },
+                            "writeOnly": {
+                              "type": "boolean"
+                            },
+                            "examples": {
+                              "type": "array",
+                              "items": {}
+                            },
+                            "anyOf": {
+                              "type": "array",
+                              "items": {}
+                            },
+                            "isImplied": {
+                              "type": "boolean"
+                            },
+                            "isSensitive": {
+                              "type": "boolean"
+                            },
+                            "referenceCollectionPath": {
+                              "type": "string"
+                            },
+                            "referenceCollectionUri": {
+                              "type": "string"
+                            }
+                          },
+                          "additionalProperties": {},
+                          "description": "JSON Schema for the action input. Used by the action engine for template output schema, run-time variables, and output mapping."
+                        },
+                        "type": {
+                          "description": "Action type (e.g. ConnectorOperation, RunJavascript). Determines which handler runs and which config schema is used for validation.",
+                          "type": "string",
+                          "enum": [
+                            "list-data-records",
+                            "find-data-record-by-id",
+                            "match-data-record",
+                            "create-data-record",
+                            "find-or-create-data-record",
+                            "update-data-record",
+                            "delete-data-record",
+                            "search-data-record",
+                            "connector-operation",
+                            "api-request-to-external-app",
+                            "api-request-to-your-app",
+                            "http-request",
+                            "run-javascript",
+                            "api-request"
+                          ]
+                        },
+                        "config": {
+                          "description": "Type-specific configuration object. Validated by the handler's config schema; passed to handler setup/run and getTemplateOutputSchema.",
+                          "type": "object",
+                          "properties": {},
+                          "additionalProperties": {}
+                        },
+                        "outputMapping": {
+                          "description": "Mapping expression to transform the action's raw output. Evaluated with access to input, output, and user; used to compute transformed output schema and at run time."
+                        },
+                        "customOutputSchema": {
+                          "type": "object",
+                          "properties": {
+                            "title": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  }
+                                }
+                              ]
+                            },
+                            "format": {
+                              "type": "string"
+                            },
+                            "properties": {
+                              "type": "object",
+                              "additionalProperties": {}
+                            },
+                            "items": {},
+                            "additionalProperties": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {}
+                              ]
+                            },
+                            "enum": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "referenceRecords": {
+                              "type": "array",
+                              "items": {}
+                            },
+                            "referenceCollection": {
+                              "type": "object",
+                              "properties": {
+                                "key": {},
+                                "parameters": {
+                                  "type": "object",
+                                  "additionalProperties": {}
+                                }
+                              }
+                            },
+                            "referenceUdm": {
+                              "type": "string"
+                            },
+                            "default": {},
+                            "allowCustom": {
+                              "type": "boolean"
+                            },
+                            "$ref": {
+                              "type": "string"
+                            },
+                            "required": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "minLength": {
+                              "type": "number"
+                            },
+                            "maxLength": {
+                              "type": "number"
+                            },
+                            "minimum": {
+                              "type": "number"
+                            },
+                            "maximum": {
+                              "type": "number"
+                            },
+                            "maxItems": {
+                              "type": "number"
+                            },
+                            "readOnly": {
+                              "type": "boolean"
+                            },
+                            "writeOnly": {
+                              "type": "boolean"
+                            },
+                            "examples": {
+                              "type": "array",
+                              "items": {}
+                            },
+                            "anyOf": {
+                              "type": "array",
+                              "items": {}
+                            },
+                            "isImplied": {
+                              "type": "boolean"
+                            },
+                            "isSensitive": {
+                              "type": "boolean"
+                            },
+                            "referenceCollectionPath": {
+                              "type": "string"
+                            },
+                            "referenceCollectionUri": {
+                              "type": "string"
+                            }
+                          },
+                          "additionalProperties": {},
+                          "description": "Explicit output schema for the action. Takes precedence over the transformed or default output schema when resolving outputSchema."
+                        },
+                        "isCustomized": {
+                          "type": "boolean"
+                        },
+                        "userId": {
+                          "type": "string"
+                        },
+                        "tenantId": {
+                          "type": "string"
+                        },
+                        "agentSessionId": {
+                          "description": "[INTERNAL] ID of the agent session building this action. Present when the action was created or updated with an intent.",
+                          "type": "string"
+                        },
+                        "universalParentId": {
+                          "description": "For connection-level instances: ID of the universal (root) action in the hierarchy. Set automatically when creating an instance; used in list/selector queries to filter by universal parent.",
+                          "type": "string"
+                        },
+                        "outputSchema": {
+                          "description": "Resolved output schema (cached after setup). Derived from customOutputSchema, transformed schema from outputMapping, default output schema, or parent custom output schema. Read-only."
+                        },
+                        "isPublic": {
+                          "description": "When true, the element is publicly listed (e.g. in universe). Used for published packages; publish/unpublish updates this on published elements.",
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name"
+                      ]
+                    },
+                    "appliedToIntegrations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "element": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Internal database ID of the element. Assigned by the API; unique per element."
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Display name. Always present in API responses (filled by API if not set on create)."
+                              },
+                              "uuid": {
+                                "description": "Stable unique identifier (UUID). Can be provided on create; otherwise generated. Must be unique across elements of this type.",
+                                "type": "string"
+                              },
+                              "key": {
+                                "description": "Stable key for referencing the element (e.g. in selectors). Unique per (parent, integration) scope. Generated from name if not provided on create.",
+                                "type": "string"
+                              },
+                              "description": {
+                                "description": "Optional human-readable description.",
+                                "type": "string"
+                              },
+                              "meta": {
+                                "description": "Optional key-value metadata.",
+                                "type": "object",
+                                "additionalProperties": {}
+                              },
+                              "state": {
+                                "description": "Current lifecycle or health state (e.g. READY, SETUP_FAILED, CONFIGURATION_ERROR, BUILDING). Set by the engine during setup and validation.",
+                                "type": "string",
+                                "enum": [
+                                  "BUILDING",
+                                  "CLIENT_ACTION_REQUIRED",
+                                  "CONFIGURATION_ERROR",
+                                  "SETUP_FAILED",
+                                  "READY"
+                                ]
+                              },
+                              "errors": {
+                                "description": "Validation or setup errors when state is not READY.",
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "bad_request",
+                                        "connection",
+                                        "configuration",
+                                        "dependency_error",
+                                        "flow_run",
+                                        "flow_instance_setup",
+                                        "concurrency",
+                                        "internal",
+                                        "action_run",
+                                        "action_instance_setup",
+                                        "unit_run",
+                                        "custom_code",
+                                        "insufficient_credit",
+                                        "openrouter_not_configured"
+                                      ]
+                                    },
+                                    "key": {
+                                      "type": "string"
+                                    },
+                                    "message": {
+                                      "type": "string"
+                                    },
+                                    "data": {},
+                                    "stack": {},
+                                    "causedByError": {},
+                                    "logs": {
+                                      "type": "array",
+                                      "items": {}
+                                    }
+                                  },
+                                  "required": [
+                                    "message"
+                                  ]
+                                }
+                              },
+                              "revision": {
+                                "description": "Opaque revision token; changes on each update. Used for optimistic concurrency.",
+                                "type": "string"
+                              },
+                              "createdAt": {
+                                "description": "ISO date when the element was created.",
+                                "type": "string"
+                              },
+                              "updatedAt": {
+                                "description": "ISO date when the element was last updated.",
+                                "type": "string"
+                              },
+                              "archivedAt": {
+                                "description": "When set, the element is archived (soft-deleted). Archived elements cannot be patched.",
+                                "type": "string"
+                              },
+                              "isDeactivated": {
+                                "description": "When true, setup is skipped and the element is treated as inactive (e.g. when dependencies are deactivated or the element is archived).",
+                                "type": "boolean"
+                              },
+                              "isReadOnly": {
+                                "description": "When true, the element cannot be modified (e.g. published package elements or elements from another workspace).",
+                                "type": "boolean"
+                              },
+                              "integrationId": {
+                                "description": "Internal ID of the integration this element belongs to. Omit for universal elements; set for integration-specific elements. Uniqueness of key is scoped per integration.",
+                                "type": "string"
+                              },
+                              "integrationUuid": {
+                                "description": "UUID of the integration; alternative to integrationId when creating from export. Resolved to integrationId by the API.",
+                                "type": "string"
+                              },
+                              "integrationKey": {
+                                "description": "Key of the integration; alternative to integrationId. Resolved to integrationId by the API.",
+                                "type": "string"
+                              },
+                              "parentId": {
+                                "description": "Internal ID of the parent workspace element. Used for hierarchy (e.g. integration-level under universal). Child key uniqueness is scoped by parent and integration.",
+                                "type": "string"
+                              },
+                              "parentUuid": {
+                                "description": "UUID of the parent element; alternative to parentId when creating (e.g. from export). Resolved to parentId by the API.",
+                                "type": "string"
+                              },
+                              "parentKey": {
+                                "description": "Key of the parent element; alternative to parentId. Resolved to parentId by the API.",
+                                "type": "string"
+                              },
+                              "connectionId": {
+                                "description": "Connection ID for filtering or for connection-level instances. Same semantics as base integration-level property.",
+                                "type": "string"
+                              },
+                              "instanceKey": {
+                                "description": "Key for the connection-level instance when multiple exist per connection. Same semantics as base integration-level property.",
+                                "type": "string"
+                              },
+                              "isUniversal": {
+                                "description": "When true, the element is universal (shared across all integrations). Requires universal-element access. Omit or false for integration-specific elements.",
+                                "type": "boolean"
+                              },
+                              "externalAppId": {
+                                "description": "Internal ID of the external app this element belongs to. Auto-populated from the integration when integrationId is set and the integration has an externalAppId.",
+                                "type": "string"
+                              },
+                              "externalAppUuid": {
+                                "description": "UUID of the external app when this action is published in a package that has an external app. Populated in API responses for published actions.",
+                                "type": "string"
+                              },
+                              "externalAppKey": {
+                                "description": "Key of the external app; alternative to externalAppId. Resolved to externalAppId by the API.",
+                                "type": "string"
+                              },
+                              "inputSchema": {
+                                "type": "object",
+                                "properties": {
+                                  "title": {
+                                    "type": "string"
+                                  },
+                                  "description": {
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "anyOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "format": {
+                                    "type": "string"
+                                  },
+                                  "properties": {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                  },
+                                  "items": {},
+                                  "additionalProperties": {
+                                    "anyOf": [
+                                      {
+                                        "type": "boolean"
+                                      },
+                                      {}
+                                    ]
+                                  },
+                                  "enum": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "referenceRecords": {
+                                    "type": "array",
+                                    "items": {}
+                                  },
+                                  "referenceCollection": {
+                                    "type": "object",
+                                    "properties": {
+                                      "key": {},
+                                      "parameters": {
+                                        "type": "object",
+                                        "additionalProperties": {}
+                                      }
+                                    }
+                                  },
+                                  "referenceUdm": {
+                                    "type": "string"
+                                  },
+                                  "default": {},
+                                  "allowCustom": {
+                                    "type": "boolean"
+                                  },
+                                  "$ref": {
+                                    "type": "string"
+                                  },
+                                  "required": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "minLength": {
+                                    "type": "number"
+                                  },
+                                  "maxLength": {
+                                    "type": "number"
+                                  },
+                                  "minimum": {
+                                    "type": "number"
+                                  },
+                                  "maximum": {
+                                    "type": "number"
+                                  },
+                                  "maxItems": {
+                                    "type": "number"
+                                  },
+                                  "readOnly": {
+                                    "type": "boolean"
+                                  },
+                                  "writeOnly": {
+                                    "type": "boolean"
+                                  },
+                                  "examples": {
+                                    "type": "array",
+                                    "items": {}
+                                  },
+                                  "anyOf": {
+                                    "type": "array",
+                                    "items": {}
+                                  },
+                                  "isImplied": {
+                                    "type": "boolean"
+                                  },
+                                  "isSensitive": {
+                                    "type": "boolean"
+                                  },
+                                  "referenceCollectionPath": {
+                                    "type": "string"
+                                  },
+                                  "referenceCollectionUri": {
+                                    "type": "string"
+                                  }
+                                },
+                                "additionalProperties": {},
+                                "description": "JSON Schema for the action input. Used by the action engine for template output schema, run-time variables, and output mapping."
+                              },
+                              "type": {
+                                "description": "Action type (e.g. ConnectorOperation, RunJavascript). Determines which handler runs and which config schema is used for validation.",
+                                "type": "string",
+                                "enum": [
+                                  "list-data-records",
+                                  "find-data-record-by-id",
+                                  "match-data-record",
+                                  "create-data-record",
+                                  "find-or-create-data-record",
+                                  "update-data-record",
+                                  "delete-data-record",
+                                  "search-data-record",
+                                  "connector-operation",
+                                  "api-request-to-external-app",
+                                  "api-request-to-your-app",
+                                  "http-request",
+                                  "run-javascript",
+                                  "api-request"
+                                ]
+                              },
+                              "config": {
+                                "description": "Type-specific configuration object. Validated by the handler's config schema; passed to handler setup/run and getTemplateOutputSchema.",
+                                "type": "object",
+                                "properties": {},
+                                "additionalProperties": {}
+                              },
+                              "outputMapping": {
+                                "description": "Mapping expression to transform the action's raw output. Evaluated with access to input, output, and user; used to compute transformed output schema and at run time."
+                              },
+                              "customOutputSchema": {
+                                "type": "object",
+                                "properties": {
+                                  "title": {
+                                    "type": "string"
+                                  },
+                                  "description": {
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "anyOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "format": {
+                                    "type": "string"
+                                  },
+                                  "properties": {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                  },
+                                  "items": {},
+                                  "additionalProperties": {
+                                    "anyOf": [
+                                      {
+                                        "type": "boolean"
+                                      },
+                                      {}
+                                    ]
+                                  },
+                                  "enum": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "referenceRecords": {
+                                    "type": "array",
+                                    "items": {}
+                                  },
+                                  "referenceCollection": {
+                                    "type": "object",
+                                    "properties": {
+                                      "key": {},
+                                      "parameters": {
+                                        "type": "object",
+                                        "additionalProperties": {}
+                                      }
+                                    }
+                                  },
+                                  "referenceUdm": {
+                                    "type": "string"
+                                  },
+                                  "default": {},
+                                  "allowCustom": {
+                                    "type": "boolean"
+                                  },
+                                  "$ref": {
+                                    "type": "string"
+                                  },
+                                  "required": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "minLength": {
+                                    "type": "number"
+                                  },
+                                  "maxLength": {
+                                    "type": "number"
+                                  },
+                                  "minimum": {
+                                    "type": "number"
+                                  },
+                                  "maximum": {
+                                    "type": "number"
+                                  },
+                                  "maxItems": {
+                                    "type": "number"
+                                  },
+                                  "readOnly": {
+                                    "type": "boolean"
+                                  },
+                                  "writeOnly": {
+                                    "type": "boolean"
+                                  },
+                                  "examples": {
+                                    "type": "array",
+                                    "items": {}
+                                  },
+                                  "anyOf": {
+                                    "type": "array",
+                                    "items": {}
+                                  },
+                                  "isImplied": {
+                                    "type": "boolean"
+                                  },
+                                  "isSensitive": {
+                                    "type": "boolean"
+                                  },
+                                  "referenceCollectionPath": {
+                                    "type": "string"
+                                  },
+                                  "referenceCollectionUri": {
+                                    "type": "string"
+                                  }
+                                },
+                                "additionalProperties": {},
+                                "description": "Explicit output schema for the action. Takes precedence over the transformed or default output schema when resolving outputSchema."
+                              },
+                              "isCustomized": {
+                                "type": "boolean"
+                              },
+                              "userId": {
+                                "type": "string"
+                              },
+                              "tenantId": {
+                                "type": "string"
+                              },
+                              "agentSessionId": {
+                                "description": "[INTERNAL] ID of the agent session building this action. Present when the action was created or updated with an intent.",
+                                "type": "string"
+                              },
+                              "universalParentId": {
+                                "description": "For connection-level instances: ID of the universal (root) action in the hierarchy. Set automatically when creating an instance; used in list/selector queries to filter by universal parent.",
+                                "type": "string"
+                              },
+                              "outputSchema": {
+                                "description": "Resolved output schema (cached after setup). Derived from customOutputSchema, transformed schema from outputMapping, default output schema, or parent custom output schema. Read-only."
+                              },
+                              "isPublic": {
+                                "description": "When true, the element is publicly listed (e.g. in universe). Used for published packages; publish/unpublish updates this on published elements.",
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "name"
+                            ]
+                          },
+                          "integration": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Internal database ID of the element. Assigned by the API; unique per element."
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Display name. Always present in API responses (filled by API if not set on create)."
+                              },
+                              "uuid": {
+                                "description": "Stable unique identifier (UUID). Can be provided on create; otherwise generated. Must be unique across elements of this type.",
+                                "type": "string"
+                              },
+                              "key": {
+                                "description": "Stable key for referencing the element (e.g. in selectors). Unique per (parent, integration) scope. Generated from name if not provided on create.",
+                                "type": "string"
+                              },
+                              "description": {
+                                "description": "Optional human-readable description.",
+                                "type": "string"
+                              },
+                              "meta": {
+                                "description": "Optional key-value metadata.",
+                                "type": "object",
+                                "additionalProperties": {}
+                              },
+                              "state": {
+                                "description": "Current lifecycle or health state (e.g. READY, SETUP_FAILED, CONFIGURATION_ERROR, BUILDING). Set by the engine during setup and validation.",
+                                "type": "string",
+                                "enum": [
+                                  "BUILDING",
+                                  "CLIENT_ACTION_REQUIRED",
+                                  "CONFIGURATION_ERROR",
+                                  "SETUP_FAILED",
+                                  "READY"
+                                ]
+                              },
+                              "errors": {
+                                "description": "Validation or setup errors when state is not READY.",
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "bad_request",
+                                        "connection",
+                                        "configuration",
+                                        "dependency_error",
+                                        "flow_run",
+                                        "flow_instance_setup",
+                                        "concurrency",
+                                        "internal",
+                                        "action_run",
+                                        "action_instance_setup",
+                                        "unit_run",
+                                        "custom_code",
+                                        "insufficient_credit",
+                                        "openrouter_not_configured"
+                                      ]
+                                    },
+                                    "key": {
+                                      "type": "string"
+                                    },
+                                    "message": {
+                                      "type": "string"
+                                    },
+                                    "data": {},
+                                    "stack": {},
+                                    "causedByError": {},
+                                    "logs": {
+                                      "type": "array",
+                                      "items": {}
+                                    }
+                                  },
+                                  "required": [
+                                    "message"
+                                  ]
+                                }
+                              },
+                              "revision": {
+                                "description": "Opaque revision token; changes on each update. Used for optimistic concurrency.",
+                                "type": "string"
+                              },
+                              "createdAt": {
+                                "description": "ISO date when the element was created.",
+                                "type": "string"
+                              },
+                              "updatedAt": {
+                                "description": "ISO date when the element was last updated.",
+                                "type": "string"
+                              },
+                              "archivedAt": {
+                                "type": "string"
+                              },
+                              "isDeactivated": {
+                                "type": "boolean"
+                              },
+                              "isReadOnly": {
+                                "description": "When true, the element cannot be modified (e.g. published package elements or elements from another workspace).",
+                                "type": "boolean"
+                              },
+                              "logoUri": {
+                                "type": "string"
+                              },
+                              "connectorId": {
+                                "type": "string"
+                              },
+                              "connectorVersion": {
+                                "type": "string"
+                              },
+                              "oAuthCallbackUri": {
+                                "type": "string"
+                              },
+                              "parameters": {},
+                              "hasMissingParameters": {
+                                "type": "boolean"
+                              },
+                              "hasDocumentation": {
+                                "type": "boolean"
+                              },
+                              "hasOperations": {
+                                "type": "boolean"
+                              },
+                              "operationsCount": {
+                                "type": "number"
+                              },
+                              "hasData": {
+                                "type": "boolean"
+                              },
+                              "dataCollectionsCount": {
+                                "type": "number"
+                              },
+                              "hasEvents": {
+                                "type": "boolean"
+                              },
+                              "eventsCount": {
+                                "type": "number"
+                              },
+                              "hasGlobalWebhooks": {
+                                "type": "boolean"
+                              },
+                              "hasUdm": {
+                                "type": "boolean"
+                              },
+                              "isTest": {
+                                "type": "boolean"
+                              },
+                              "externalAppId": {
+                                "type": "string"
+                              },
+                              "appUuid": {
+                                "description": "[INTERNAL] Deprecated: Use externalAppId instead",
+                                "type": "string"
+                              },
+                              "authType": {
+                                "type": "string",
+                                "enum": [
+                                  "integration-app-token",
+                                  "membrane-token",
+                                  "oauth2",
+                                  "oauth1",
+                                  "client-credentials",
+                                  "proxy"
+                                ]
+                              },
+                              "optionsConfig": {
+                                "type": "object",
+                                "additionalProperties": {
+                                  "type": "object",
+                                  "properties": {
+                                    "disabled": {
+                                      "type": "boolean"
+                                    },
+                                    "parameters": {
+                                      "type": "object",
+                                      "additionalProperties": {}
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "name",
+                              "logoUri"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "element",
+                          "integration"
+                        ]
+                      }
+                    },
+                    "defaultOutputSchema": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        },
+                        "format": {
+                          "type": "string"
+                        },
+                        "properties": {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        "items": {},
+                        "additionalProperties": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {}
+                          ]
+                        },
+                        "enum": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "referenceRecords": {
+                          "type": "array",
+                          "items": {}
+                        },
+                        "referenceCollection": {
+                          "type": "object",
+                          "properties": {
+                            "key": {},
+                            "parameters": {
+                              "type": "object",
+                              "additionalProperties": {}
+                            }
+                          }
+                        },
+                        "referenceUdm": {
+                          "type": "string"
+                        },
+                        "default": {},
+                        "allowCustom": {
+                          "type": "boolean"
+                        },
+                        "$ref": {
+                          "type": "string"
+                        },
+                        "required": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "minLength": {
+                          "type": "number"
+                        },
+                        "maxLength": {
+                          "type": "number"
+                        },
+                        "minimum": {
+                          "type": "number"
+                        },
+                        "maximum": {
+                          "type": "number"
+                        },
+                        "maxItems": {
+                          "type": "number"
+                        },
+                        "readOnly": {
+                          "type": "boolean"
+                        },
+                        "writeOnly": {
+                          "type": "boolean"
+                        },
+                        "examples": {
+                          "type": "array",
+                          "items": {}
+                        },
+                        "anyOf": {
+                          "type": "array",
+                          "items": {}
+                        },
+                        "isImplied": {
+                          "type": "boolean"
+                        },
+                        "isSensitive": {
+                          "type": "boolean"
+                        },
+                        "referenceCollectionPath": {
+                          "type": "string"
+                        },
+                        "referenceCollectionUri": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": {}
+                    },
+                    "transformedOutputSchema": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        },
+                        "format": {
+                          "type": "string"
+                        },
+                        "properties": {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        "items": {},
+                        "additionalProperties": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {}
+                          ]
+                        },
+                        "enum": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "referenceRecords": {
+                          "type": "array",
+                          "items": {}
+                        },
+                        "referenceCollection": {
+                          "type": "object",
+                          "properties": {
+                            "key": {},
+                            "parameters": {
+                              "type": "object",
+                              "additionalProperties": {}
+                            }
+                          }
+                        },
+                        "referenceUdm": {
+                          "type": "string"
+                        },
+                        "default": {},
+                        "allowCustom": {
+                          "type": "boolean"
+                        },
+                        "$ref": {
+                          "type": "string"
+                        },
+                        "required": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "minLength": {
+                          "type": "number"
+                        },
+                        "maxLength": {
+                          "type": "number"
+                        },
+                        "minimum": {
+                          "type": "number"
+                        },
+                        "maximum": {
+                          "type": "number"
+                        },
+                        "maxItems": {
+                          "type": "number"
+                        },
+                        "readOnly": {
+                          "type": "boolean"
+                        },
+                        "writeOnly": {
+                          "type": "boolean"
+                        },
+                        "examples": {
+                          "type": "array",
+                          "items": {}
+                        },
+                        "anyOf": {
+                          "type": "array",
+                          "items": {}
+                        },
+                        "isImplied": {
+                          "type": "boolean"
+                        },
+                        "isSensitive": {
+                          "type": "boolean"
+                        },
+                        "referenceCollectionPath": {
+                          "type": "string"
+                        },
+                        "referenceCollectionUri": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": {}
+                    },
+                    "dependencies": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a new action",
+        "tags": [
+          "Actions"
+        ]
+      }
+    }
+  },
+  "security": [
+    {
+      "bearer": []
+    }
+  ],
+  "tags": []
+}
